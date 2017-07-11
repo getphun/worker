@@ -35,4 +35,14 @@ class Worker{
             return false;
         return unlink($file);
     }
+    
+    public function get($name){
+        $ctn = file_get_contents(BASEPATH . '/etc/worker/jobs/' . $name);
+        $ctn = explode(' | ', $ctn);
+        return (object)[
+            'name' => $name,
+            'time' => $ctn[0],
+            'url'  => $ctn[1]
+        ];
+    }
 }
