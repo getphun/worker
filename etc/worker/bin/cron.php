@@ -23,24 +23,33 @@ while(true){
 
     foreach($files as $file){
         $file_abs = BASEPATH . '/etc/worker/jobs/' . $file;
+        if(!is_file($file_abs))
+            continue;
+
         $file_ctn = file_get_contents($file_abs);
+        unlink($file_abs);
+
         $data = explode(' | ', $file_ctn);
         
-        if(!$data || !isset($data[1])){
-            unlink($file_abs);
+        if(!$data || !isset($data[1]))
             continue;
-        }
-        
+
         $time = trim($data[0]);
         
         if($time > time())
             continue;
-        
+
         $url = trim($data[1]);
         
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+        if(strstr($url, 'https://')){
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        }
+
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
         curl_close($ch);
@@ -49,7 +58,6 @@ while(true){
         $tx.= $nl;
         $tx.= $result;
         
-        unlink($file_abs);
         $file_res = BASEPATH . '/etc/worker/result/' . $file;
         $f = fopen($file_res, 'w');
         fwrite($f, $tx);
