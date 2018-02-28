@@ -10,8 +10,12 @@ namespace Worker\Service;
 
 class Worker{
 
-    public function add($name, $url, $time){
+    public function add($name, $url, $time, $overwrite=false){
         $file = BASEPATH . '/etc/worker/jobs/' . $name;
+
+        if(!$overwrite && is_file($file))
+            return false;
+        
         $f = fopen($file, 'w');
         fwrite($f, "$time | $url");
         fclose($f);

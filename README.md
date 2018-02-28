@@ -1,7 +1,6 @@
 # worker
 
-System scheduler. Jalankan cron setiap 15 detik, atau lebih cepat untuk mengeksekusi
-`php ./etc/worker/bin/cron.php`
+System scheduler. Jalankan cron setiap 1 menit `php ./etc/worker/bin/cron.php`
 
 Module ini menambahkan satu service pada aplikasi dengan nama `worker` yang memiliki
 beberapa method seperti di bawah:

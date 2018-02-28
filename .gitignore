@@ -1,0 +1,5 @@
+etc/worker/jobs/*
+!etc/worker/jobs/.gitkeep
+
+etc/worker/result/*
+!etc/worker/result/.gitkeep
