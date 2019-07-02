@@ -19,6 +19,9 @@ class Worker{
         $f = fopen($file, 'w');
         fwrite($f, "$time | $url");
         fclose($f);
+
+        if(!is_file($file))
+            return false;
         
         return true;
     }

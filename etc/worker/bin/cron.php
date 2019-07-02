@@ -27,12 +27,13 @@ while(true){
             continue;
 
         $file_ctn = file_get_contents($file_abs);
-        unlink($file_abs);
 
         $data = explode(' | ', $file_ctn);
         
-        if(!$data || !isset($data[1]))
+        if(!$data || !isset($data[1])){
+            unlink($file_abs);
             continue;
+        }
 
         $time = trim($data[0]);
         
@@ -41,6 +42,7 @@ while(true){
 
         $url = trim($data[1]);
         
+        unlink($file_abs);
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
